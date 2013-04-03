@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:soap="http://cxf.apache.org/bindings/soap"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ http://cxf.apache.org/jaxws
+ http://cxf.apache.org/schemas/jaxws.xsd
+ http://cxf.apache.org/jaxrs
+ http://cxf.apache.org/schemas/jaxrs.xsd
+ http://www.springframework.org/schema/util
+ http://www.springframework.org/schema/util/spring-util.xsd
+ http://cxf.apache.org/bindings/soap
+ http://cxf.apache.org/schemas/configuration/soap.xsd ">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- Spring manage ServiceBean -->
+	<bean id="mainWSImpl" class="com.fidelitytranslations.ws.impl.MainWSImpl">
+	</bean>
+
+	<!-- JAX-WS Service Endpoint -->
+	<jaxws:endpoint id="mainWS" implementor="#mainWSImpl"
+		address="/main">
+		<jaxws:binding>
+			<soap:soapBinding version="1.2" mtomEnabled="true" />
+		</jaxws:binding>
+	</jaxws:endpoint>
+
+	<!-- Symfoni JSON mapper and provider -->
+	<bean id="jacksonMapper" class="com.fidelitytranslations.common.providers.FidelityObjectMapper" />
+	<bean id="jsonProvider" class="com.fidelitytranslations.common.providers.FidelityJSONProvider">
+		<constructor-arg ref="jacksonMapper" />
+	</bean>
+
+	<!-- Exposing the test service as a rest service -->
+	<jaxrs:server id="restWS" address="/rest">
+		<jaxrs:serviceBeans>
+			<ref bean="mainWSImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<jaxrs:providers>
+			<ref bean="jsonProvider" />
+			<bean id="fidelityException"
+				class="com.fidelitytranslations.common.exception.FidelityExceptionMapper" />
+			<bean id="webException" class="com.fidelitytranslations.common.exception.WebExceptionMapper" />
+			<bean id="generalException"
+				class="com.fidelitytranslations.common.exception.GeneralExceptionMapper" />
+		</jaxrs:providers>
+	</jaxrs:server>
+</beans>
