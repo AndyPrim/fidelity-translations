@@ -21,6 +21,7 @@
 
 	<!-- Spring manage ServiceBean -->
 	<bean id="mainWSImpl" class="com.fidelitytranslations.ws.impl.MainWSImpl">
+		<property name="mainService" ref="mainService" />
 	</bean>
 
 	<!-- JAX-WS Service Endpoint -->
