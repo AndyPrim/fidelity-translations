@@ -17,6 +17,7 @@
 	<log4j.version>1.2.16</log4j.version>
 	<jackson_jaxrs.version>1.9.11</jackson_jaxrs.version>
 	<servlet.version>2.5</servlet.version>
+	<mysql.version>5.1.24</mysql.version>
 	<!-- Maven plugins -->
 	<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
   </properties>
@@ -99,6 +100,12 @@
 		<artifactId>servlet-api</artifactId>
 		<version>${servlet.version}</version>
 		<scope>provided</scope>
+	</dependency>
+	<!-- MySQL database driver -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>${mysql.version}</version>
 	</dependency>
   </dependencies>
   <build>
