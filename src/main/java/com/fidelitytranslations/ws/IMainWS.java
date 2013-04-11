@@ -11,7 +11,8 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 import javax.xml.ws.soap.SOAPBinding;
 
-import com.fidelitytranslations.common.datamodels.VoidResponse;
+import com.fidelitytranslations.common.datamodels.KeywordModel;
+import com.fidelitytranslations.common.datamodels.ListResponse;
 import com.fidelitytranslations.common.exception.FidetilyException;
 
 @Path("/main")
@@ -25,5 +26,24 @@ public interface IMainWS {
     @Path("/getInfo")
     @WebMethod
     public @WebResult(name = "result")
-    VoidResponse getInfo() throws FidetilyException;
+    ListResponse<String> getInfo() throws FidetilyException;
+
+    @GET
+    @Path("/getLanguages")
+    @WebMethod
+    public @WebResult(name = "languages")
+    ListResponse<KeywordModel> getLanguages() throws FidetilyException;
+
+    @GET
+    @Path("/getSectors")
+    @WebMethod
+    public @WebResult(name = "sectors")
+    ListResponse<KeywordModel> getSectors() throws FidetilyException;
+
+    @GET
+    @Path("/getWordCount")
+    @WebMethod
+    public @WebResult(name = "wordCount")
+    ListResponse<Integer> getWordCount() throws FidetilyException;
+
 }
